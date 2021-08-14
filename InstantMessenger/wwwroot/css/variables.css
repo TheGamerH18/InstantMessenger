@@ -1,0 +1,89 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto:wght@300&display=swap');
+
+* {
+    outline: none;
+    padding: 0px;
+    margin: 0;
+    transition: 500ms linear;
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+
+    /**
+     * this Value is to Control the Dark / Light mode
+     * Other Value like the Color of the Text adjust him self
+    */
+    --DarkMode: 100%;
+
+    --BG-900: hsla(0, var(--DarkMode), var(--DarkMode), 0.9);
+    --BG-800: hsla(0, var(--DarkMode), var(--DarkMode), 0.8);
+    --BG-700: hsla(0, var(--DarkMode), var(--DarkMode), 0.7);
+    --BG-600: hsla(0, var(--DarkMode), var(--DarkMode), 0.6);
+    --BG-500: hsla(0, var(--DarkMode), var(--DarkMode), 0.5);
+    --BG-400: hsla(0, var(--DarkMode), var(--DarkMode), 0.4);
+    --BG-300: hsla(0, var(--DarkMode), var(--DarkMode), 0.3);
+    --BG-200: hsla(0, var(--DarkMode), var(--DarkMode), 0.2);
+    --BG-100: hsla(0, var(--DarkMode), var(--DarkMode), 0.1);
+
+    --Shadow-900: hsla(0, 0%, 0%, 0.9);
+    --Shadow-800: hsla(0, 0%, 0%, 0.8);
+    --Shadow-700: hsla(0, 0%, 0%, 0.7);
+    --Shadow-600: hsla(0, 0%, 0%, 0.6);
+    --Shadow-500: hsla(0, 0%, 0%, 0.5);
+    --Shadow-400: hsla(0, 0%, 0%, 0.4);
+    --Shadow-300: hsla(0, 0%, 0%, 0.3);
+    --Shadow-200: hsla(0, 0%, 0%, 0.2);
+    --Shadow-100: hsla(0, 0%, 0%, 0.1);
+
+    --Accent-1000: rgb(0, 131, 208);
+    --Accent-900: rgba(0, 131, 208, .975);
+    --Accent-800: rgba(0, 131, 208, .8);
+    --Accent-700: rgba(0, 131, 208, .7);
+    --Accent-600: rgba(0, 131, 208, .6);
+    --Accent-500: rgba(0, 131, 208, .5);
+    --Accent-400: rgba(0, 131, 208, .4);
+    --Accent-300: rgba(0, 131, 208, .3);
+    --Accent-200: rgba(0, 131, 208, .2);
+    --Accent-100: rgba(0, 131, 208, .1);
+
+    --Accent-logo-900-transparent: hsla(300, 64%, 62%, .9);
+    --Accent-logo-800-transparent: hsla(300, 59%, 57%, .8);
+    --Accent-logo-700-transparent: hsla(300, 54%, 52%, .7);
+    --Accent-logo-600-transparent: hsla(300, 49%, 47%, .6);
+    --Accent-logo-500-transparent: hsla(300, 44%, 42%, .5);
+    --Accent-logo-400-transparent: hsla(300, 39%, 37%, .4);
+    --Accent-logo-300-transparent: hsla(300, 34%, 32%, .3);
+    --Accent-logo-200-transparent: hsla(300, 29%, 27%, .2);
+    --Accent-logo-100-transparent: hsla(300, 24%, 22%, .1);
+    --Accent-logo-900: hsl(300, 64%, 62%);
+    --Accent-logo-800: hsl(300, 59%, 57%);
+    --Accent-logo-700: hsl(300, 54%, 52%);
+    --Accent-logo-600: hsl(300, 49%, 47%);
+    --Accent-logo-500: hsl(300, 44%, 42%);
+    --Accent-logo-400: hsl(300, 39%, 37%);
+    --Accent-logo-300: hsl(300, 34%, 32%);
+    --Accent-logo-200: hsl(300, 29%, 27%);
+    --Accent-logo-100: hsl(300, 24%, 22%);
+
+    --Color-Text: hsl(0, calc( (calc(var(--DarkMode) - 100%)) * -1), calc( (calc(var(--DarkMode) - 100%)) * -1));
+
+
+    --title: 'Poppins', sans-serif;
+
+    --Site-Size: 450px;
+    --OwnUser-Size: calc(calc(920px/100)*12);
+
+    --User-Size: calc(calc(920px/100)*8);
+}
+@media(prefers-color-scheme: dark) {
+    :root {
+        --DarkMode: 0%;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+    background: var(--BG-900);
+}
