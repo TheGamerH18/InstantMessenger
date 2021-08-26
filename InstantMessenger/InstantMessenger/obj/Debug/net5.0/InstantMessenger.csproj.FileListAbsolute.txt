@@ -201,3 +201,4 @@ C:\Users\PCMR-Portable\Desktop\Schule\ITA1\LF_06\InstantMessenger\InstantMesseng
 C:\Users\PCMR-Portable\Desktop\Schule\ITA1\LF_06\InstantMessenger\InstantMessenger\InstantMessenger\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Error.cshtml.g.cs
 C:\Users\PCMR-Portable\Desktop\Schule\ITA1\LF_06\InstantMessenger\InstantMessenger\InstantMessenger\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\PCMR-Portable\Desktop\Schule\ITA1\LF_06\InstantMessenger\InstantMessenger\InstantMessenger\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+C:\Users\PCMR-Portable\Desktop\Schule\ITA1\LF_06\InstantMessenger\InstantMessenger\InstantMessenger\bin\Debug\net5.0\libman.json
