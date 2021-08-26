@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using InstantMessenger.Models;
 
 namespace InstantMessenger.Data
 {
@@ -12,5 +13,6 @@ namespace InstantMessenger.Data
             : base(options)
         {
         }
+        public DbSet<InstantMessenger.Models.Chat> Chat { get; set; }
     }
 }
