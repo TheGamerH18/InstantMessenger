@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace InstantMessenger.Models
         public int Id { get; set; }
         public string Text { get; set; }
 
-        [DataType(DataType.Time)]
+        [DataType(DataType.DateTime)]
         public DateTime date { get; set; }
-        public string sender { get; set; }
-        public string reciever { get; set; }
+        public IdentityUser sender { get; set; }
+        public IdentityUser reciever { get; set; }
     }
 }
