@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using InstantMessenger.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InstantMessenger.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -18,19 +20,24 @@ namespace InstantMessenger.Hubs
             _context = context;
         }
 
-        public async Task SendMessage(string username, string message)
+        public override Task OnConnectedAsync()
         {
+            Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
+
             List<Models.Chat> chats = new List<Models.Chat>;
-            List<Models.Chat> chatstemp = await _context.Chat.Include(m => m.sender).ToListAsync();
-            foreach(Models.Chat d in chatstemp)
-            {
-                chats.Add(d);
-            }
-            chatstemp = await _context.Chat.Include(m => m.reciever).ToListAsync();
-            foreach(Models.Chat d in chatstemp)
-            {
-                chats.Add(d);
-            }
+            Clients.Group(Context.User.Identity.Name).SendAsync("Chats", chats);
+            return base.OnConnectedAsync();
+        }
+
+        public async Task SendtoUser(string sender, string reciever, string message)
+        {
+            Models.Chat messagetodb = new Models.Chat;
+            messagetodb.reciever = userManager.FindByNameAsync(reciever).Result;
+            messagetodb.sender = userManager.FindByNameAsync(Context.User.Identity.Name).Result;
+            messagetodb.Text = message;
+
+            await _context.Chat.AddAsync(messagetodb);
+            await Clients.Group(reciever).SendAsync("Recieve Message", sender, message)
         }
     }
 }
