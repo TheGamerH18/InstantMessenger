@@ -24,20 +24,20 @@ namespace InstantMessenger.Hubs
         {
             Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
 
-            List<Models.Chat> chats = new List<Models.Chat>;
+            List<Models.Chat> chats = new List<Models.Chat>();
             Clients.Group(Context.User.Identity.Name).SendAsync("Chats", chats);
             return base.OnConnectedAsync();
         }
 
         public async Task SendtoUser(string sender, string reciever, string message)
         {
-            Models.Chat messagetodb = new Models.Chat;
+            Models.Chat messagetodb = new Models.Chat();
             messagetodb.reciever = userManager.FindByNameAsync(reciever).Result;
             messagetodb.sender = userManager.FindByNameAsync(Context.User.Identity.Name).Result;
             messagetodb.Text = message;
 
             await _context.Chat.AddAsync(messagetodb);
-            await Clients.Group(reciever).SendAsync("Recieve Message", sender, message)
+            await Clients.Group(reciever).SendAsync("Recieve Message", sender, message);
         }
     }
 }
