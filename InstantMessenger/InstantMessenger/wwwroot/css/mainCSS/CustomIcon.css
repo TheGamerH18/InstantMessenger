@@ -1,0 +1,21 @@
+Mail{
+    position: absolute;
+    height: 1.1rem;
+    width: 1.4rem;
+    top: -60%;
+    left: -2.51rem;
+    border: 1px solid var(--Accent-logo-200);
+    border-radius: 4px;
+    overflow: hidden;
+}
+Mail::after{
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -2px;
+    height: 1.5rem;
+    width: 1.5rem;
+    transform: rotate(45deg);
+    border: 1px solid var(--Accent-logo-200);
+    border-radius: 4px;
+}

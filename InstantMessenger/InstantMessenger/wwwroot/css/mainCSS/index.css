@@ -1,0 +1,14 @@
+#header{
+    min-height: 500vh;
+}
+#logo {
+    pointer-events: none;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    z-index: -10;
+    height: 200px;
+    width: 200px;
+    transform: translate(-50%, -50%);
+    filter: hue-rotate(230deg) saturate(200%);
+}

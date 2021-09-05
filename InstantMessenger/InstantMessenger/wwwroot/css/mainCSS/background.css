@@ -1,0 +1,6 @@
+/* For the Background */
+html {
+    background: var(--BG-900);
+    background-image: url("../img/background.svg");
+    background-size: 5px;
+}

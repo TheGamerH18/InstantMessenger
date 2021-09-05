@@ -1,0 +1,173 @@
+
+/* force Darkmode */
+:root {
+    --DarkMode: 0%;
+}
+body, html{
+    height: 100vh;
+}
+
+
+/* The main login frame */
+#login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 800px;
+    width: 500px;
+    border-radius: 40px;
+    background-color: var(--Color-Text);
+    opacity: .85;
+    box-shadow: 4px 4px 1px gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+/* The Logo in the Login */
+#logo {
+    pointer-events: none;
+    position: relative;
+    z-index: -10;
+    height: 200px;
+    width: 200px;
+    margin-bottom: 20px;
+    margin-top: -120px;
+    transform: translate(100, 100%);
+    filter: hue-rotate(230deg) saturate(200%);
+}
+
+/* the Login text as well as the error Message*/
+#text, #info, #errorMsg{
+    pointer-events: none;
+    margin-top: -150px;
+    color: var(--BG-900);
+    position: relative;
+    font-family: var(--title);
+    text-align: center;
+}
+#text{
+    font-size: 2rem;
+}
+#info{
+    display: none;
+}
+#errorMsg{
+    color: red;
+    opacity: 0;
+}
+
+
+
+/* The Main Formular */
+form {
+    margin: -100px;
+    color: var(--BG-900);
+    display: flex;
+    min-height: 300px;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+label, input {
+    width: 200px;
+    transition: .25s;
+    background-color: rgba(0,0,0,0);
+}
+label {
+    pointer-events: none;
+    margin-bottom: 50px;
+}
+label p {
+    transform: translateY(-20px);
+}
+input {
+    color: var(--BG-900);
+    border: none;
+    padding: 20px;
+    margin-bottom: -25px;
+    background: var(--Accent-logo-100-transparent);
+    border-radius: 10px;
+}
+/* change the Label when in input */
+input:focus + label p, input:focus + label p, input:focus + label {
+    transform: translateY(-8px);
+    z-index: -1;
+}
+input:valid + label p, input:valid + label p, input:valid + label {
+    transform: translateY(-8px);
+    z-index: -1;
+}
+/* change the Input when inside */
+input:active, input:focus{
+    transform: translateY(37px);
+    padding: 0px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--Accent-900);
+    border-radius: 0;
+    background: transparent;
+}
+input:valid, input:valid, input:valid {
+    transform: translateY(37px);
+    padding: 0px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--Accent-900);
+    border-radius: 0;
+    background: transparent;
+}
+
+/* The login Button */
+#loginBtn {
+    font-size: 1rem;
+    color: white;
+    margin-top: 10px;
+    display: block;
+    background: var(--Accent-logo-900);
+    width: 150px;
+    height: 50px;
+    outline: none;
+    border: none;
+    border-radius: 50px;
+    transform: translateY(5px);
+    box-shadow: 2px 2px 2px var(--Shadow-300);
+}
+#loginBtn:hover, #loginBtn:focus {
+    transform: scale(1.1) translateY(5px);
+}
+
+
+
+
+/* Laptop Svg */
+#LaptopGuy{
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0%;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#headlaptopguy {
+    animation: .75s alternate-reverse headbang infinite ease-in-out;
+}
+
+@keyframes headbang {  
+    from{
+        transform: translate(0px, 5px);
+    } to {
+        transform: translate(2px, 10px);
+    }
+}
+
+
+#back{
+    color: var(--Color-Text);
+    transform: rotate(180deg);
+    position: absolute;
+    font-size: 3rem;
+    margin-left: 1rem;
+    cursor: pointer;
+}

@@ -1,0 +1,176 @@
+nav{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0px;
+    left: 0px;
+    width: fit-content;
+    height: 100vh;
+    transform: translateX(-350px);
+    background: var(--Color-Text);
+    z-index: 1000;
+    --Item-Shadow: 0 0 1px var(--Shadow-900);
+    --Item-BG: var(--Color-Text);
+    --Item-padding: 10px;
+    --Item-height: 1rem;
+    --Item-width: 330px;
+    --Item-Color: var(--BG-900);
+}
+body {
+    height: 1000vh;
+}
+.navItem{
+    background: var(--Item-BG);
+    box-shadow:  var(--Item-Shadow);
+    display: block;
+    position: relative;
+    padding: var(--Item-padding);
+    height: var(--Item-height);
+    width: var(--Item-width);
+    text-decoration: none;
+    color: var(--Item-Color);
+}
+.link {
+    text-decoration: none;
+    color: var(--Item-Color);
+}
+.navItem > .link {
+    display: block;
+    position: relative;
+    text-align: center;
+}
+:hover > .link, link:hover, .link:focus, .link:active {
+    transform: scale(1.2);
+}
+.dropDownItem:hover, .navItem:hover {
+    background: lightgray;
+}
+.dropDown {
+    box-shadow: 6px 0px 10px 5px var(--Shadow-900);
+    transition: 10ms;
+    display: block;
+    position: relative;
+    background-color: var(--Item-BG);
+    z-index: 100;
+}
+nav .dropDown {
+    transform: translate(-10px, -150px) scale(0);
+}
+.dropDownItem {
+    background: var(--Item-BG);
+    height: var(--Item-height);
+    width: var(--Item-width);
+    padding: var(--Item-padding);
+    box-shadow: var(--Item-Shadow);
+    color: var(--Item-Color);
+}
+.dropDownItem > p {
+    transform: scale(1) !important;
+}
+.dropDown::after, .dropDown::before{
+    transition: 1s !important;
+    content: "";
+    position: absolute;
+    background: white;
+    height: calc(var(--Item-height)*2.2);
+    top: 0rem;
+    left: -2.2rem;
+    width: 2rem;
+    clip-path: polygon(60% 0, 60% 100%, 100% 50%);
+}
+
+
+
+
+.dropDownItem:hover .dropDown::after, .navItem:hover  .dropDown::after{
+    background: lightgray;
+}
+.dropDown::before {
+    clip-path: none;
+    width: 1rem;
+    background: white;
+    left: -1rem;
+    width: 1rem;
+}
+:hover > .dropDown {
+    transform: translate(340px, -29px) scale(1);
+}
+nav.open {
+    transform: translateX(0px);
+}
+
+
+nav > footer{
+    position: relative;
+    height: 250px;
+    width: 350px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+nav footer #logo {
+    position: absolute;
+    bottom: 55%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    filter: hue-rotate(230deg) saturate(200%);
+    border-radius: 50%;
+}
+.appName {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-25%, 0%);
+    filter: hue-rotate(230deg) saturate(200%);
+    border-radius: 50%;
+}
+#copyright {
+    font-size: .7rem;
+    position: absolute;
+    right: 60px;
+    bottom: 0px;
+    margin: 2px;
+    width: 200px;
+}
+
+#Hamb.open #Hamb1{
+    transform: rotate(45deg) translate(0, -50px);
+    transform-origin: center;
+    transform-box: center;
+}
+#Hamb.open #Hamb2{
+    transform: rotate(calc(90deg + 45deg)) translate(0, 0px);
+    transform-origin: center;
+    transform-box: center;
+}
+#Hamb.open #Hamb3{
+    transform: rotate(calc(180deg + 45deg)) translate(0, 50px) scale(0);
+    transform-origin: center;
+    transform-box: center;
+}
+
+#Hamb.open {
+    transform: rotate(180deg) translateX(0px) translateY(0px);
+    transform-origin: center;
+    transform-box: center;
+}
+#Hamb{
+    transform: rotate(0deg) translateX(85px) translateY(10px);
+    display: block;
+    right: 10px;
+    top: 0px;
+    position: absolute;
+}
+
+#Hamb.open:hover{
+    animation: .1s Hamburger 4 alternate-reverse linear;
+}
+@keyframes Hamburger {
+    from{
+        transform: rotate(185deg);
+    } to {
+        transform: rotate(175deg);
+    }
+}

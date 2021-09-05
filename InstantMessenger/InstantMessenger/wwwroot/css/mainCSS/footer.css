@@ -1,0 +1,81 @@
+html body footer {
+    --BG: hsla(0, var(--DarkMode), var(--DarkMode), 1);
+    --BG-1: hsla(0, var(--DarkMode), var(--DarkMode), 0.8);
+    background: linear-gradient(180deg, var(--BG-1), var(--BG)70%);
+    position: relative;
+    transform: translateY(110%);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+html body footer::before {
+    content: "";
+    background: linear-gradient(180deg, transparent, var(--BG-1));
+    position: absolute;
+    top: -100px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+}
+.itemList {
+    flex-basis: none;
+    flex-wrap: wrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+.itemList * {
+    flex-basis: none;
+    flex-wrap: wrap;
+    margin: 10px;
+    color: honeydew;
+}
+.divider::after {
+    content: "";
+    width: 100vw;
+    height: 1px;
+    top: -10px;
+    position: absolute;
+    background-color: lightgray;
+    opacity: .1;
+}
+.row {
+    flex-basis: none;
+    flex-wrap: wrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+.col {
+    flex-basis: 400px;
+    flex-wrap: wrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+.header {
+    font-family: var(--title);
+    font-size: 1.1rem;
+    color: var(--Accent-logo-400);
+}
+footer .itemList #logo {
+    filter: hue-rotate(230deg) saturate(200%);
+    width: 100px;
+    height: 100px;
+}
+.item{
+    position: relative;
+}
+a{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}

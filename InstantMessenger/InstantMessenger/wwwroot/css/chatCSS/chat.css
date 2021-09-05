@@ -1,0 +1,68 @@
+.chats {
+    min-height: 100%;
+    width: 300px;
+    background: gray;
+    display: flex;
+    position: absolute;
+    justify-content: space-around;
+    flex-direction: column;
+}
+.userChat {
+    overflow: hidden;
+    height: fit-content;
+    padding: 10px;
+    width: 280px;
+    position: relative;
+    display: flex;
+}
+img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.openChat {
+    top: 0px;
+    right: 0px;
+    width: calc(100vw - 310px);
+    position: absolute;
+    height: 100vh;
+}
+.message {
+    min-height: 75px;
+    width: 30vw;
+    min-width: 150px;
+    background: lightgray;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: left;
+    padding: 10px;
+}
+.from.message::after {
+    content: "";
+    position: absolute;
+    height: 20px;
+    background: inherit;
+    width: 20px;
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    z-index: -1;
+    top: 0px;
+    left: -10px;
+}
+.you {
+    transform:translateX(100vh);
+}
+
+.you.message::after {
+    content: "";
+    position: absolute;
+    height: 20px;
+    background: inherit;
+    width: 20px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+    z-index: -1;
+    top: 0px;
+    right: -10px;
+}
