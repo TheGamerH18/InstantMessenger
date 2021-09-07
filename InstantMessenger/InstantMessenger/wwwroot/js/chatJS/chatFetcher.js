@@ -4,18 +4,18 @@ let ExistingChats = new Array();
 let clearChatMessages = () => {
     var el = document.querySelector('.openChat');
 
-    while ( el.firstChild ) el.removeChild( el.firstChild );
+    while (el.firstChild) el.removeChild(el.firstChild);
 };
 
 // The Main Renderer
 const mainRender = () => {
-    for(i = 0; i < ExistingChats.length; i++) {
-        if(ExistingChats[i].isActive) {
+    for (i = 0; i < ExistingChats.length; i++) {
+        if (ExistingChats[i].isActive) {
             ExistingChats[i].render();
             updater();
         }
     }
-    setTimeout(mainRender, 1000/30)
+    setTimeout(mainRender, 1000 / 30)
 }
 
 
@@ -25,21 +25,19 @@ document.onreadystatechange = () => {
 }
 
 const updater = () => {
-    
+
     // Loop through every Chat and Check if it needs to be created or not
-    for(i = 0; i < Chats.length; i++) {
-        if(exists(Chats[i]))
-            ExistingChats[i].update(Chats[i].Messages);
-        else
+    for (i = 0; i < Chats.length; i++) {
+        if (!exists(Chats[i]))
             ExistingChats[ExistingChats.length] = new Chat(Chats[i]);
     }
 }
 
 // check if the chat is already existing
 let exists = (newChat) => {
-    for(chat in ExistingChats) {
+    for (chat in ExistingChats) {
         // check also if the Type is the Same 
-        if(newChat.UserID === ExistingChats[chat].id)
+        if (newChat.UserID === ExistingChats[chat].id)
             return !0;
     }
     return !1;
@@ -52,8 +50,8 @@ let times = 0;
 // Needed in the Renderer to know what needs to be Rendered
 let setActiveID = (thisID) => {
 
-    for(i = 0; i < ExistingChats.length; ++i) {
-        if(ExistingChats[i].id == thisID) {
+    for (i = 0; i < ExistingChats.length; ++i) {
+        if (ExistingChats[i].id == thisID) {
             ExistingChats[i].setActive(!0);
         } else {
             ExistingChats[i].setActive(!1);
@@ -61,9 +59,24 @@ let setActiveID = (thisID) => {
     }
 }
 
+
+
+// Add a Message to a Chat with ID
+let addMessage = (id, message) => {
+
+    console.log("Searching")
+
+    for (let i = 0; i < ExistingChats.length; i++) {
+        console.log("jHAJSdgaghsdjagdshg")
+        if (ExistingChats[i].id == id) {
+            ExistingChats[i].addMessage(message);
+        }
+    }
+}
+
 // Keep the names in Json the same
 // The Chat as a Object, for more Accessibility
-class Chat{
+class Chat {
 
     // The Constructor, the Syntax of the Json must be the Same
     constructor({
@@ -76,7 +89,7 @@ class Chat{
         this.id = id;
         this.messages = messages;
         this.isActive = !1;
-        
+
         /*
           Create the DOM Elements
         */
@@ -85,7 +98,7 @@ class Chat{
 
         this.userImg = document.createElement("img");
         this.userImg.setAttribute("class", "userImg");
-        this.userImg.setAttribute("src", "/img/fallbackImg.jpg");
+        this.userImg.setAttribute("src", "img/fallbackImg.jpg");
 
         this.content = document.createElement("div");
         this.content.setAttribute("class", "content");
@@ -96,29 +109,30 @@ class Chat{
 
         this.latestMes = document.createElement("p");
         this.latestMes.setAttribute("class", "newestMessage");
-        this.latestMes.innerHTML = this.messages[this.messages.length-1][1];
+        this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
 
         // Append the Elements
         document.querySelector(".chats").appendChild(this.div);
 
         this.div.appendChild(this.userImg);
         this.div.appendChild(this.content);
-        
+
         this.content.appendChild(this.userName);
         this.content.appendChild(this.latestMes);
 
         // Add a Click Listener
-        this.div.setAttribute("onClick", "setActiveID("+this.id+")");
+        this.div.setAttribute("onClick", "setActiveID(" + this.id + ")");
     }
 
-    // Update the Messages
-    update(messages) {
-        this.messages = messages;
+    // Add a Message
+    addMessage(messages) {
+        console.log("hjahshdh")
+        this.messages[this.messages.length] = [true, messages];
     }
-    
+
     setActive(bool) {
         this.isActive = bool;
-        if(this.isActive) {
+        if (this.isActive) {
             this.div.style.background = "red";
         } else {
             this.div.style.background = "";
@@ -131,25 +145,25 @@ class Chat{
     }
 
     showChat() {
-        for(let mes in this.messages){
-            if(this.messages[mes][0])
+        for (let mes in this.messages) {
+            if (this.messages[mes][0])
                 this.createFrom(this.messages[mes][1]);
             else
                 this.createTo(this.messages[mes][1]);
         }
     }
 
-    createFrom (mes) {
+    createFrom(mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message from");
     }
 
-    createTo (mes) {
+    createTo(mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message you");
     }
 
-    createMes (mes) {
+    createMes(mes) {
         let div = document.createElement("div");
         let content = document.createElement("p");
         content.setAttribute("class", "content");
