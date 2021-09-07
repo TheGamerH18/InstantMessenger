@@ -1,4 +1,5 @@
 .chats {
+    z-index: 100000 !important;
     min-height: 100%;
     width: 300px;
     background: gray;
@@ -21,6 +22,7 @@ img{
     border-radius: 50%;
 }
 .openChat {
+    z-index: 100000 !important;
     top: 0px;
     right: 0px;
     width: calc(100vw - 310px);

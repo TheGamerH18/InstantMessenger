@@ -85,7 +85,7 @@ class Chat{
 
         this.userImg = document.createElement("img");
         this.userImg.setAttribute("class", "userImg");
-        this.userImg.setAttribute("src", "~/img/fallbackImg.jpg");
+        this.userImg.setAttribute("src", "/img/fallbackImg.jpg");
 
         this.content = document.createElement("div");
         this.content.setAttribute("class", "content");
