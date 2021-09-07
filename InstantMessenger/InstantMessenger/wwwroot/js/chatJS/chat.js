@@ -1,3 +1,5 @@
+const { signalR } = require("../signalr/dist/browser/signalr");
+
 let Chats = Array(
     {UserName: "Testuser", UserID: 1337, Messages: [[from = false, message = "laksdkasjd"],[from = true, message = 1],[from = false, message = 1],[from = false, message = 1],[from = true, message = 1]]},
     {UserName: "Sven", UserID: 1338,     Messages: [[from = false, message = "laksdkasjd"],[from = true, message = 1],[from = false, message = 1],[from = true, message = 1],[from = true, message = 1]]},
@@ -12,3 +14,6 @@ let Chats = Array(
     {UserName: "Sven10", UserID: 13356,  Messages: [[from = false, message = "laksdkasjd"],[from = true, message = 1],[from = false, message = 1],[from = true, message = 1],[from = true, message = 1]]},
     {UserName: "Sven11", UserID: 1381,   Messages: [[from = false, message = "laksdkasjd"],[from = true, message = 1],[from = false, message = 1],[from = true, message = 1],[from = true, message = 1]]}
 );
+
+"use strict";
+var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
