@@ -6,6 +6,7 @@ using InstantMessenger.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace InstantMessenger.Hubs
 {
@@ -24,9 +25,11 @@ namespace InstantMessenger.Hubs
         public override Task OnConnectedAsync()
         {
             Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
-
-            List<Models.Chat> chats = new List<Models.Chat>();
-            Clients.Group(Context.User.Identity.Name).SendAsync("Chats", chats);
+            var user = _userManager.FindByNameAsync(Context.User.Identity.Name);
+            var messages = _context.Chat.Where(p =>
+                p.reciever == user.Result
+                || p.sender == user.Result);
+            Clients.Group(Context.User.Identity.Name).SendAsync("messages", chats);
             return base.OnConnectedAsync();
         }
 

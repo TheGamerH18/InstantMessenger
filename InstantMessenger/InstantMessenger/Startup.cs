@@ -37,7 +37,10 @@ namespace InstantMessenger
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
 
-            services.AddSignalR();
+            services.AddSignalR(e => {
+                e.MaximumReceiveMessageSize = 102400000;
+                e.EnableDetailedErrors = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
