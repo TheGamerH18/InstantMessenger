@@ -20,6 +20,7 @@ namespace InstantMessenger.Hubs
         {
             _context = context;
             _userManager = userManager;
+            Console.WriteLine("Context configured");
         }
 
         public override Task OnConnectedAsync()
@@ -30,7 +31,13 @@ namespace InstantMessenger.Hubs
                 p.reciever == user.Result
                 || p.sender == user.Result);
             List<Dictionary<string, dynamic>> chats = new();
+            foreach(Models.Chat message in messages)
+            {
+                AddmessagetoArray(message, chats);
+                Console.WriteLine("Message Added");
+            }
             Clients.Group(Context.User.Identity.Name).SendAsync("messages", chats);
+            Console.WriteLine("Connected");
             return base.OnConnectedAsync();
         }
 
@@ -72,7 +79,7 @@ namespace InstantMessenger.Hubs
             return newchat;
         }
 
-        public async Task SendtoUser(string sender, string reciever, string message)
+        public async Task SendtoUser(string reciever, string message)
         {
             Models.Chat messagetodb = new()
             {
@@ -81,8 +88,11 @@ namespace InstantMessenger.Hubs
                 Text = message
             };
 
+            Console.WriteLine("Created new Message");
+
             await _context.Chat.AddAsync(messagetodb);
-            await Clients.Group(reciever).SendAsync("Recieve Message", sender, message);
+            await _context.SaveChangesAsync();
+            await Clients.Caller.SendAsync("recievemessage", messagetodb.Id, messagetodb.Text);
         }
     }
 }
