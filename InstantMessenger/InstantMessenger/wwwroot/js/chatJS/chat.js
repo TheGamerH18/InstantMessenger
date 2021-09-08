@@ -21,6 +21,7 @@ connection.start().then(function () {
 })
 
 connection.on("messages", function (chats) {
+    console.log(Chats);
     console.log(chats);
     Chats = chats;
 });
@@ -28,3 +29,7 @@ connection.on("messages", function (chats) {
 connection.on("recievemessage", function (id, message) {
     addMessage(id, message);
 });
+
+function sendnewmessage () {
+    connection.invoke("SendtoUser", "Svenistraucher", "test");
+}
