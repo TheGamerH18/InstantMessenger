@@ -21,15 +21,17 @@ connection.start().then(function () {
 })
 
 connection.on("messages", function (chats) {
+    Chats = JSON.parse(chats);
+    ClearAll();
+    updater();
     console.log(Chats);
-    console.log(chats);
-    Chats = chats;
 });
 
 connection.on("recievemessage", function (id, message) {
     addMessage(id, message);
+    console.log(Chats);
 });
 
 function sendnewmessage () {
-    connection.invoke("SendtoUser", "Svenistraucher", "test");
+    connection.invoke("SendtoUser", "Svenistraucher", "test")
 }

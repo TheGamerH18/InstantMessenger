@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace InstantMessenger.Hubs
 {
@@ -29,15 +31,20 @@ namespace InstantMessenger.Hubs
             var user = _userManager.FindByNameAsync(Context.User.Identity.Name);
             var messages = _context.Chat.Where(p =>
                 p.reciever == user.Result
-                || p.sender == user.Result);
+                || p.sender == user.Result)
+                .Include(p => p.reciever)
+                .Include(p => p.sender);
             List<Dictionary<string, dynamic>> chats = new();
             foreach(Models.Chat message in messages)
             {
-                AddmessagetoArray(message, chats);
+                Console.WriteLine("Message from " + message.sender.UserName + " to " + message.reciever.UserName);
+                chats = AddmessagetoArray(message, chats);
                 Console.WriteLine("Message Added");
             }
-            Clients.Group(Context.User.Identity.Name).SendAsync("messages", chats);
-            Console.WriteLine("Connected");
+
+            var chatjson = JsonSerializer.Serialize(chats);
+            Console.WriteLine(chatjson);
+            Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
             return base.OnConnectedAsync();
         }
 
@@ -46,25 +53,38 @@ namespace InstantMessenger.Hubs
             var contextuser = _userManager.FindByNameAsync(Context.User.Identity.Name).Result;
             var isfromuser = (message.reciever.UserName != contextuser.UserName);
             // Create Dictionary, which holds if the user is the sender and the message itself
-            Dictionary<string, dynamic> newmessage = new();
-            newmessage.Add("from", isfromuser);
-            newmessage.Add("message", message.Text);
-
+            List<dynamic> newmessage = new();
+            newmessage.Add(isfromuser);
+            newmessage.Add(message.Text);
             // Add message to existing Chat, if existing and returning
             for (int i = 0; i < chats.Count; i++)
             {
-                if(chats[i]["UserName"] == message.reciever.UserName &&
-                    chats[i]["UserID"] == message.reciever.Id)
+                if (isfromuser)
                 {
-                    chats[i]["Message"].append(newmessage);
-                    return chats;
+                    var index = i;
+                    var username = chats[index]["UserName"];
+                    var userid = chats[index]["UserID"];
+                    if (username == message.reciever.UserName &&
+                        userid == message.reciever.Id)
+                    {
+                        chats[i]["Messages"].Add(newmessage);
+                        return chats;
+                    }
+                } else
+                {
+                    if (chats[i]["UserName"] == message.sender.UserName &&
+                        chats[i]["UserID"] == message.sender.Id)
+                    {
+                        chats[i]["Messages"].Add(newmessage);
+                        return chats;
+                    }
                 }
             }
 
             // Create new Chat
             var newchat = NewChat(isfromuser, message);
-            newchat["Message"].append(newmessage);
-            _ = chats.Append(newchat);
+            newchat["Messages"].Add(newmessage);
+            chats.Add(newchat);
             return chats;
         }
 
@@ -74,7 +94,7 @@ namespace InstantMessenger.Hubs
             Dictionary<string, dynamic> newchat = new();
             newchat.Add("UserName", User.UserName);
             newchat.Add("UserID", User.Id);
-            newchat.Add("Messages", new List<Dictionary<string, dynamic>>());
+            newchat.Add("Messages", new List<List<dynamic>>());
 
             return newchat;
         }
@@ -92,7 +112,10 @@ namespace InstantMessenger.Hubs
 
             await _context.Chat.AddAsync(messagetodb);
             await _context.SaveChangesAsync();
-            await Clients.Caller.SendAsync("recievemessage", messagetodb.Id, messagetodb.Text);
+            var id = (messagetodb.reciever.UserName != Context.User.Identity.Name) ? messagetodb.reciever : messagetodb.sender;
+            var id2 = (messagetodb.reciever.UserName != Context.User.Identity.Name) ? messagetodb.sender : messagetodb.reciever;
+            _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text);
+            _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text);
         }
     }
 }
