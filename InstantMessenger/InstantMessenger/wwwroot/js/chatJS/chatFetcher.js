@@ -18,6 +18,14 @@ const mainRender = () => {
     setTimeout(mainRender, 1000 / 30)
 }
 
+// Clear the Whole System
+function ClearAll() {
+    clearChatMessages();
+    var el = document.querySelector('.chats');
+
+    while (el.firstChild) el.removeChild(el.firstChild);
+}
+
 
 // Update if the Document gets an Update
 document.onreadystatechange = () => {
@@ -63,11 +71,7 @@ let setActiveID = (thisID) => {
 
 // Add a Message to a Chat with ID
 let addMessage = (id, message) => {
-
-    console.log("Searching")
-
     for (let i = 0; i < ExistingChats.length; i++) {
-        console.log("jHAJSdgaghsdjagdshg")
         if (ExistingChats[i].id == id) {
             ExistingChats[i].addMessage(message);
         }
@@ -126,7 +130,6 @@ class Chat {
 
     // Add a Message
     addMessage(messages) {
-        console.log("hjahshdh")
         this.messages[this.messages.length] = [true, messages];
     }
 
