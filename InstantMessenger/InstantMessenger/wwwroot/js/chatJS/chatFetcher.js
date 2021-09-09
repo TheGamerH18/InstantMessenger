@@ -126,7 +126,7 @@ class Chat {
         this.content.appendChild(this.latestMes);
 
         // Add a Click Listener
-        this.div.setAttribute("onClick", "setActiveID(" + this.id + ")");
+        this.div.setAttribute("onClick", "setActiveID(\"" + this.id + "\")");
     }
 
     // Add a Message
