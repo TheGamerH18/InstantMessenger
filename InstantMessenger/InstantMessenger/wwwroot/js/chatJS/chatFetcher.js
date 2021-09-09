@@ -20,6 +20,7 @@ const mainRender = () => {
 
 // Clear the Whole System
 function ClearAll() {
+    ExistingChats = new Array();
     clearChatMessages();
     var el = document.querySelector('.chats');
 
