@@ -1,14 +1,13 @@
-﻿using System;
-using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using InstantMessenger.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using InstantMessenger.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace InstantMessenger.Hubs
 {
@@ -37,20 +36,18 @@ namespace InstantMessenger.Hubs
             List<Dictionary<string, dynamic>> chats = new();
             foreach(Models.Chat message in messages)
             {
-                Console.WriteLine("Message from " + message.Sender.UserName + " to " + message.Reciever.UserName);
                 chats = AddmessagetoArray(message, chats);
-                Console.WriteLine("Message Added");
             }
 
             var chatjson = JsonSerializer.Serialize(chats);
-            Console.WriteLine(chatjson);
             Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
+            Console.WriteLine("Connected");
             return base.OnConnectedAsync();
         }
 
         private List<Dictionary<string, dynamic>> AddmessagetoArray(Models.Chat message, List<Dictionary<string, dynamic>> chats)
         {
-            var contextuser = _userManager.FindByNameAsync(Context.User.Identity.Name).Result;
+            var contextuser = GetUserbyName(Context.User.Identity.Name);
             var isfromuser = (message.Reciever.UserName != contextuser.UserName);
             // Create Dictionary, which holds if the user is the sender and the message itself
             List<dynamic> newmessage = new();
@@ -61,11 +58,8 @@ namespace InstantMessenger.Hubs
             {
                 if (isfromuser)
                 {
-                    var index = i;
-                    var username = chats[index]["UserName"];
-                    var userid = chats[index]["UserID"];
-                    if (username == message.Reciever.UserName &&
-                        userid == message.Reciever.Id)
+                    if (chats[i]["UserName"] == message.Reciever.UserName &&
+                        chats[i]["UserID"] == message.Reciever.Id)
                     {
                         chats[i]["Messages"].Add(newmessage);
                         return chats;
@@ -101,24 +95,32 @@ namespace InstantMessenger.Hubs
 
         public async Task SendtoUser(string reciever, string message)
         {
+            // Create Chat message from model
             Models.Chat messagetodb = new()
             {
-                Reciever = _userManager.FindByNameAsync(reciever).Result,
-                Sender = _userManager.FindByNameAsync(Context.User.Identity.Name).Result,
+                Reciever = GetUserbyName(reciever),
+                Sender = GetUserbyName(Context.User.Identity.Name),
                 Text = message
             };
 
             Console.WriteLine("Created new Message");
 
+            // Add message to DB
             await _context.Chat.AddAsync(messagetodb);
             await _context.SaveChangesAsync();
 
-            var id = (messagetodb.Reciever.UserName != Context.User.Identity.Name) ? messagetodb.Reciever : messagetodb.Sender;
-            var id2 = (messagetodb.Reciever.UserName != Context.User.Identity.Name) ? messagetodb.Sender : messagetodb.Reciever;
-            var isfromuser = (messagetodb.Reciever.UserName != _userManager.FindByNameAsync(Context.User.Identity.Name).Result.UserName);
+            bool v = messagetodb.Reciever.UserName != Context.User.Identity.Name;
+            var id = v ? messagetodb.Reciever : messagetodb.Sender;
+            var id2 = v ? messagetodb.Sender : messagetodb.Reciever;
+            var isfromuser = messagetodb.Reciever.UserName != GetUserbyName(Context.User.Identity.Name).UserName;
 
             _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
             _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
+        }
+
+        private IdentityUser GetUserbyName(string username)
+        {
+            return _userManager.FindByNameAsync(username).Result;
         }
     }
 }
