@@ -95,11 +95,18 @@ namespace InstantMessenger.Hubs
 
         public async Task SendtoUser(string reciever, string message)
         {
+            string name = Context.User.Identity.Name;
+
+            if (!Checkuserexists(reciever))
+            {
+                Console.WriteLine("User " + name + " send Message to Unknown User " + reciever);
+                return;
+            }
             // Create Chat message from model
             Models.Chat messagetodb = new()
             {
                 Reciever = GetUserbyName(reciever),
-                Sender = GetUserbyName(Context.User.Identity.Name),
+                Sender = GetUserbyName(name),
                 Text = message
             };
 
@@ -109,10 +116,10 @@ namespace InstantMessenger.Hubs
             await _context.Chat.AddAsync(messagetodb);
             await _context.SaveChangesAsync();
 
-            bool v = messagetodb.Reciever.UserName != Context.User.Identity.Name;
+            bool v = messagetodb.Reciever.UserName != name;
             var id = v ? messagetodb.Reciever : messagetodb.Sender;
             var id2 = v ? messagetodb.Sender : messagetodb.Reciever;
-            var isfromuser = messagetodb.Reciever.UserName != GetUserbyName(Context.User.Identity.Name).UserName;
+            var isfromuser = messagetodb.Reciever.UserName != GetUserbyName(name).UserName;
 
             _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
             _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
@@ -121,6 +128,12 @@ namespace InstantMessenger.Hubs
         private IdentityUser GetUserbyName(string username)
         {
             return _userManager.FindByNameAsync(username).Result;
+        }
+
+        private bool Checkuserexists(string username)
+        {
+            if (GetUserbyName(username) != null) return true;
+            return false;
         }
     }
 }
