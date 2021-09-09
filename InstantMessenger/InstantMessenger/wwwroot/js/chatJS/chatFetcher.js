@@ -71,10 +71,10 @@ let setActiveID = (thisID) => {
 
 
 // Add a Message to a Chat with ID
-let addMessage = (id, message) => {
+let addMessage = (id, message, bool) => {
     for (let i = 0; i < ExistingChats.length; i++) {
         if (ExistingChats[i].id == id) {
-            ExistingChats[i].addMessage(message);
+            ExistingChats[i].addMessage(message, bool);
         }
     }
 }
@@ -130,8 +130,8 @@ class Chat {
     }
 
     // Add a Message
-    addMessage(messages) {
-        this.messages[this.messages.length] = [true, messages];
+    addMessage(messages, bool) {
+        this.messages[this.messages.length] = [bool, messages];
     }
 
     setActive(bool) {
