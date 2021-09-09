@@ -13,8 +13,8 @@ namespace InstantMessenger.Models
         public string Text { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime date { get; set; }
-        public IdentityUser sender { get; set; }
-        public IdentityUser reciever { get; set; }
+        public DateTime Date { get; set; }
+        public IdentityUser Sender { get; set; }
+        public IdentityUser Reciever { get; set; }
     }
 }
