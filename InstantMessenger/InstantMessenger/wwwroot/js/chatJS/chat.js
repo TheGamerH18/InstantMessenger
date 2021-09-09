@@ -27,8 +27,8 @@ connection.on("messages", function (chats) {
     console.log(Chats);
 });
 
-connection.on("recievemessage", function (id, message) {
-    addMessage(id, message);
+connection.on("recievemessage", function (id, message, isfrom) {
+    addMessage(id, message, isfrom);
     console.log(Chats);
 });
 

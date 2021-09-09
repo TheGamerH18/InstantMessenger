@@ -54,7 +54,7 @@ namespace InstantMessenger.Hubs
             var isfromuser = (message.Reciever.UserName != contextuser.UserName);
             // Create Dictionary, which holds if the user is the sender and the message itself
             List<dynamic> newmessage = new();
-            newmessage.Add(isfromuser);
+            newmessage.Add(!isfromuser);
             newmessage.Add(message.Text);
             // Add message to existing Chat, if existing and returning
             for (int i = 0; i < chats.Count; i++)
@@ -112,10 +112,13 @@ namespace InstantMessenger.Hubs
 
             await _context.Chat.AddAsync(messagetodb);
             await _context.SaveChangesAsync();
+
             var id = (messagetodb.Reciever.UserName != Context.User.Identity.Name) ? messagetodb.Reciever : messagetodb.Sender;
             var id2 = (messagetodb.Reciever.UserName != Context.User.Identity.Name) ? messagetodb.Sender : messagetodb.Reciever;
-            _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text);
-            _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text);
+            var isfromuser = (messagetodb.Reciever.UserName != _userManager.FindByNameAsync(Context.User.Identity.Name).Result.UserName);
+
+            _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
+            _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
         }
     }
 }
