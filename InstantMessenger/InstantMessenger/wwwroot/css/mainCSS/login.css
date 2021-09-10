@@ -66,6 +66,7 @@ form {
     margin: -100px;
     color: var(--BG-900);
     display: flex;
+    z-index: 10000;
     min-height: 300px;
     align-items: center;
     justify-content: space-evenly;
@@ -146,7 +147,7 @@ input:valid, input:valid, input:valid {
     position: absolute;
     bottom: 0px;
     left: 0%;
-    z-index: 100;
+    z-index: -100;
     pointer-events: none;
 }
 
