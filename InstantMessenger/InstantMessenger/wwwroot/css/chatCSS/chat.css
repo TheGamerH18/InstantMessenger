@@ -5,7 +5,6 @@
     background: gray;
     display: flex;
     position: absolute;
-    justify-content: space-around;
     flex-direction: column;
 }
 .userChat {

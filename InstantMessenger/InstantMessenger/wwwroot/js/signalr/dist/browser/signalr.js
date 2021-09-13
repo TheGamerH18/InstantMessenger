@@ -2428,7 +2428,8 @@ var HubConnection = /** @class */ (function () {
         var _this = this;
         this.nextKeepAlive = 0;
         _Utils__WEBPACK_IMPORTED_MODULE_4__["Arg"].isRequired(connection, "connection");
-        _Utils__WEBPACK_IMPORTED_MODULE_4__["Arg"].isRequired(logger, "logger");
+        _Utils__WEBPACK_IMPORTED_MODULE_4
+        __["Arg"].isRequired(logger, "logger");
         _Utils__WEBPACK_IMPORTED_MODULE_4__["Arg"].isRequired(protocol, "protocol");
         this.serverTimeoutInMilliseconds = DEFAULT_TIMEOUT_IN_MS;
         this.keepAliveIntervalInMilliseconds = DEFAULT_PING_INTERVAL_IN_MS;
