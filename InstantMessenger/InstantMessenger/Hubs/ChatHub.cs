@@ -14,10 +14,10 @@ namespace InstantMessenger.Hubs
     [Authorize]
     public class ChatHub : Hub
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ChatHub(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ChatHub(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -125,7 +125,7 @@ namespace InstantMessenger.Hubs
             _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
         }
 
-        private IdentityUser GetUserbyName(string username)
+        private ApplicationUser GetUserbyName(string username)
         {
             return _userManager.FindByNameAsync(username).Result;
         }
