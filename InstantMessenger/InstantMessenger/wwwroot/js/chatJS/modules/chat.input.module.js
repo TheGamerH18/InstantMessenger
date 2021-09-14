@@ -1,6 +1,6 @@
 import { getUserNameOfActive } from "./chatFetcher.module.js";
 import { connection } from "./chat.js";
-connection.invoke("SendtoUser", "ASDUser", "Spitzkohl");
+
 export class inputListener {
 
     constructor( ListenerObj ) {
