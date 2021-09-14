@@ -28,7 +28,7 @@ export let exists = (newChat) => {
 
 // To set the clicked chat to active
 // Needed in the Renderer to know what needs to be Rendered
-export function setActiveID (obj) {
+export function setActiveID(obj) {
     for (let i = 0; i < ExistingChats.length; ++i) {
         if (ExistingChats[i] == obj) {
             ExistingChats[i].setActive(!0);
@@ -40,9 +40,16 @@ export function setActiveID (obj) {
 
 // Add a Message to a Chat with ID
 export let addMessage = (id, message, bool) => {
+    console.log(bool);
     for (let i = 0; i < ExistingChats.length; i++) {
         if (ExistingChats[i].id == id) {
             ExistingChats[i].addMessage(message, bool);
         }
     }
+}
+
+export let getUserNameOfActive = () => {
+    for (let i = 0; i < ExistingChats.length; i++)
+        if (ExistingChats[i].isActive)
+            return ExistingChats[i].name;
 }

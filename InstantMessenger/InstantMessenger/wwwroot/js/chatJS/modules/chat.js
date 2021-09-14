@@ -43,7 +43,7 @@ export let Chats = Array(
 
 
 "use strict";
-var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+export var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
 
 connection.start().then( () => {
     console.log("Connected")
@@ -51,15 +51,10 @@ connection.start().then( () => {
 
 connection.on("messages", (chats) => {
     Chats = JSON.parse(chats);
-    console.log("Geht");
     ClearAll();
-    console.log("Geht");
     updater();
-    console.log("Geht");
-    console.log(Chats);
 });
 
 connection.on("recievemessage", (id, message, isfrom) => {
     addMessage(id, message, isfrom);
-    console.log(Chats);
 });

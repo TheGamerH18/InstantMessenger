@@ -2,6 +2,7 @@ import { ExistingChats, exists } from "./chatFetcher.module.js";
 import { Chats } from "./chat.js";
 import { Chat } from "./chat.module.js";
 import { ChatClickListener } from "./ChatClickListener.module.js";
+import { inputListener } from "./chat.input.module.js"
 
 // The Main Renderer
 // Check for all existing Chag if any Chat is setted to Active
@@ -12,10 +13,13 @@ export const mainRender = () => {
             ExistingChats[i].render();
         }
     }
+    inputListenerObj.render();
     updater();
     ChatClickListener.render();
     setTimeout(mainRender, 1000 / 30)
 }
+
+let inputListenerObj = new inputListener(document.querySelector("#inputMessage"))
 
 export const updater = () => {
 

@@ -58,8 +58,8 @@ export class Chat{
     }
 
     // Add a Message
-    addMessage(messages) {
-        this.messages[this.messages.length] = [true, messages];
+    addMessage(messages, bool) {
+        this.messages[this.messages.length] = [bool, messages];
     }
     
     // Set the Chat to active or inactive
@@ -88,13 +88,13 @@ export class Chat{
     }
 
     // Create a Message that came from the other Person
-    createFrom (mes) {
+    createFrom(mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message from");
     }
 
     // Create a Message that came from you
-    createTo (mes) {
+    createTo(mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message you");
     }
