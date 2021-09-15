@@ -1,0 +1,20 @@
+﻿@page
+@model ProfilePicture
+@{
+    ViewData["Title"] = "Profile Picture";
+    ViewData["ActivePage"] = ManageNavPages.ProfilePicture;
+}
+<form enctype="multipart/form-data" method="post">
+    <dl>
+        <dt>
+            <label asp-for="FileUpload.FormFile"></label>
+        </dt>
+        <dd>
+            <input asp-for="FileUpload.FormFile" type="file">
+        </dd>
+    </dl>
+    <input asp-page-handler="Upload" class="btn" type="submit" value="Upload">
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
