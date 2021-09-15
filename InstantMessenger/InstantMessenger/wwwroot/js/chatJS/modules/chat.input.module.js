@@ -10,12 +10,11 @@ export class inputListener {
 
         document.addEventListener("keydown", (ev) => {
             this.enter = ev.key.toLowerCase() == "enter" | false;
+            this.render();
         });
         document.addEventListener("keyup", (ev) => {
             this.enter = false;
         });
-        
-        this.render();
     }
 
     render () {

@@ -6,20 +6,20 @@
 class ChatListener {
 
     // give a DOM Element to listen to.
-    constructor( ListenerObj ) {
+    constructor( ListenerObj, ScrollListener ) {
         this.ListenerObj = ListenerObj;
+        this.ScrollListener = ScrollListener ?? null;
+        this.ListenerObj.style.left = this.ListenerObj.style.left=="" ? "0" : this.ListenerObj.style.left;
+        this.ListenerObj.style.top = this.ListenerObj.style.top=="" ? "0" : this.ListenerObj.style.top;
 
         // Create a empty array of Obj to Listing to
         this.listening = new Array();
 
-        // Create the Mouse Obj
-        this.mouse = {x: null, y: null};
-
         // The Mouse Listener to get the Mouse position
-        this.mouseListener = document.addEventListener("mousemove", (mouse) => {
+        this.mouse = document.addEventListener("mousemove", (mouse) => {
             this.mouse = {
-                x: mouse.clientX+window.scrollX,
-                y: mouse.clientY+window.scrollY
+                x: mouse.clientX + ( parseInt( (this.ListenerObj.style.left) ) * -1 ),
+                y: mouse.clientY + ( parseInt( (this.ListenerObj.style.top) ) * -1 )
             };
         });
 
@@ -30,6 +30,7 @@ class ChatListener {
             // Key for left msnbtn is 1
             // Only mark as down if the mouse is inside of the Listening Obj
             this.clicked = (this.ListenerObj.scrollWidth >= this.mouse.x) ? ev.which == 1 : false;
+            this.render();
         })
         document.addEventListener("mouseup", () => {
             this.clicked = false;

@@ -1,5 +1,6 @@
 import { clearChatMessages } from "./chatFetcher.module.js";
 import { ChatClickListener } from "./ChatClickListener.module.js";
+import { openChatScrollListener } from "./renderer.module.js";
 
 // Keep the names in Json the same
 // The Chat as a Object, for more Accessibility
@@ -59,17 +60,22 @@ export class Chat{
 
     // Add a Message
     addMessage(messages, bool) {
-        this.messages[this.messages.length] = [bool, messages];
-        this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
+        this.messages[this.messages.length] = [bool ?? false, messages];
+        setTimeout(() => {
+            openChatScrollListener.scrollToEndY();
+        }, 100)
     }
     
     // Set the Chat to active or inactive
     setActive(bool) {
         this.isActive = bool;
-        if(this.isActive)
+        if(this.isActive) {
             this.div.style.background = "red";
-        else
+            this.finished = false;
+        }
+        else {
             this.div.style.background = "";
+        }
     }
 
     // Render this chat
@@ -86,16 +92,20 @@ export class Chat{
             else
                 this.createTo(this.messages[mes][1]);
         }
+        if(!this.finished) {
+            openChatScrollListener.scrollToEndY();
+            this.finished = true;
+        }
     }
 
     // Create a Message that came from the other Person
-    createFrom(mes) {
+    createFrom (mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message from");
     }
 
     // Create a Message that came from you
-    createTo(mes) {
+    createTo (mes) {
         let div = this.createMes(mes);
         div.setAttribute("class", "message you");
     }
