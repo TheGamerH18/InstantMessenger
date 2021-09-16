@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 {
@@ -50,22 +51,36 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostUploadAsync()
         {
-            using (var memoryStream = new MemoryStream())
+            bool fileallowed = false;
+            string[] allowedFileTypes = { "image/gif", "image/jpg", "image/webp", "image/png" };
+            foreach (string FileType in allowedFileTypes)
             {
-                await FileUpload.FormFile.CopyToAsync(memoryStream);
-
-                // Upload the file if less than 2 MB
-                if(memoryStream.Length < 2097152)
+                fileallowed |= FileUpload.FormFile.ContentType.Equals(FileType);
+            }
+            if (fileallowed)
+            {
+                using (var memoryStream = new MemoryStream())
                 {
-                    var user = _userManager.GetUserAsync(User).Result;
-                    user.ProfilePicture = memoryStream.ToArray();
-                    _context.Users.Update(user);
-                    _context.SaveChanges();
+                    await FileUpload.FormFile.CopyToAsync(memoryStream);
+                    // Upload the file if less than 5 MB
+                    if (memoryStream.Length < 5242880)
+                    {
+                        var user = _userManager.GetUserAsync(User).Result;
+                        user.ProfilePicture = memoryStream.ToArray();
+                        _context.Users.Update(user);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        StatusMessage = "Selected File is too large ( > 2MB )";
+                        ModelState.AddModelError("File", "The file is too large.");
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("File", "The file is too large.");
-                }
+            } 
+            else
+            {
+                StatusMessage = "Selected File is not an Image of type jpg, png, webp or gif";
+                ModelState.AddModelError("File", "Wrong FileType");
             }
             return Page();
         }
