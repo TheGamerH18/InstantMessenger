@@ -18,8 +18,8 @@ export const mainRender = () => {
     setTimeout(mainRender, 1000 / 30)
 }
 new inputListener(document.querySelector("#inputMessage"))
-new scrollListener(document.querySelector(".chats"));
-export let openChatScrollListener = new scrollListener(document.querySelector(".openChat"));
+new scrollListener(document.querySelector(".chatsOverall"));
+export let openChatScrollListener = new scrollListener(document.querySelector(".openChatOverall"));
 export const updater = () => {
 
     // Loop through every Chat and Check if it needs to be created or not

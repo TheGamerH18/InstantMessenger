@@ -27,12 +27,12 @@ export default class scrollListener {
 
     // Create the Custom Scrollbar
     createScrollbar() {
-        console.log("kjsad");
         this.scrollbar = document.createElement("div");
         this.scrollbar.setAttribute("id","scrollbar");
         this.scrollbar.style.transition = this.transitionTime;
         this.obj.appendChild(this.scrollbar);
         this.scrollbar.style.transform = "scale(0)";
+        console.log("kjsad");
     }
 
     // Check if the Cursor is inside of the Element
