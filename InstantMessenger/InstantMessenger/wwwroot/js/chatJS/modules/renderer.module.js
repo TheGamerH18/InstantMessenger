@@ -15,7 +15,7 @@ export const mainRender = () => {
         }
     }
     updater();
-    setTimeout(mainRender, 1000 / 10)
+    setTimeout(mainRender, 1000 / 30)
 }
 new inputListener(document.querySelector("#inputMessage"))
 new scrollListener(document.querySelector(".chats"));

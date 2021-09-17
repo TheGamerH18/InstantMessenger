@@ -1,11 +1,18 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
 html {
     overflow: hidden;
 }
-body{
+
+body {
     --width-inner: calc(100vw - 310px);
     --width-outer: 300px;
 }
-.chats {
+
+.chatsOverall {
     overflow: hidden;
     min-height: 100%;
     width: var(--width-outer);
@@ -14,6 +21,7 @@ body{
     position: absolute;
     flex-direction: column;
 }
+
 .userChat {
     overflow: hidden;
     height: fit-content;
@@ -22,18 +30,25 @@ body{
     position: relative;
     display: flex;
 }
-img{
+
+    .userChat#active {
+        background-color: burlywood;
+    }
+
+img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
 }
-.openChat {
+
+.openChatOverall {
     top: 0px;
     right: 0px;
     width: var(--width-inner);
     position: absolute;
     height: 100vh;
 }
+
 .message {
     min-height: 75px;
     width: 30vw;
@@ -47,6 +62,7 @@ img{
     justify-content: left;
     padding: 10px;
 }
+
 .from.message::after {
     content: "";
     position: absolute;
@@ -58,33 +74,32 @@ img{
     top: 0px;
     left: -10px;
 }
+
 .you {
-    transform:translateX(100vh);
+    transform: translateX(100vh);
 }
 
-.you.message::after {
-    content: "";
-    position: absolute;
-    height: 20px;
-    background: inherit;
-    width: 20px;
-    clip-path: polygon(100% 0, 0 0, 0 100%);
-    z-index: -1;
-    top: 0px;
-    right: -10px;
-}
+    .you.message::after {
+        content: "";
+        position: absolute;
+        height: 20px;
+        background: inherit;
+        width: 20px;
+        clip-path: polygon(100% 0, 0 0, 0 100%);
+        z-index: -1;
+        top: 0px;
+        right: -10px;
+    }
 
-div.input {
-    position: absolute;
-    height: 100px;
-    width: var(--width-inner);
-}
 #inputMessage {
-    height: 20px;
-    width: var(--width-inner);
-    top: 0;
-    left: var(--width-outer);
-    position: absolute;
+    overflow: hidden;
+    resize: none;
+    padding: 10px;
+    height: 50px;
+    display: flex;
+    width: calc(100% - calc(10px*4));
+    left: -10px;
+    position: relative;
 }
 
 #scrollbar {

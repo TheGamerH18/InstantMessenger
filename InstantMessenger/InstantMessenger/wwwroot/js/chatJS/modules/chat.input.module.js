@@ -20,7 +20,9 @@ export class inputListener {
     render () {
         if(this.enter) {
             let string = this.ListenerObj.value;
-            this.ListenerObj.value = "";
+            setTimeout(() => {
+                this.ListenerObj.value = "";
+            }, 100)
             if(string == "" || 0)
                 return;
             connection.invoke("SendtoUser", getUserNameOfActive(), string)

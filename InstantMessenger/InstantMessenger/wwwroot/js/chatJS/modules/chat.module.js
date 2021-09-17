@@ -60,7 +60,7 @@ export class Chat{
 
     // Add a Message
     addMessage(messages, bool) {
-        this.messages[this.messages.length] = [bool ?? false, messages];
+        this.messages[this.messages.length] = [bool, messages];
         setTimeout(() => {
             openChatScrollListener.scrollToEndY();
         }, 100)
@@ -70,11 +70,11 @@ export class Chat{
     setActive(bool) {
         this.isActive = bool;
         if(this.isActive) {
-            this.div.style.background = "red";
+            this.div.setAttribute("id", "active");
             this.finished = false;
         }
         else {
-            this.div.style.background = "";
+            this.div.removeAttribute("id", "active");
         }
     }
 

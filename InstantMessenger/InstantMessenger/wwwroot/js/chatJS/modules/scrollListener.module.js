@@ -27,6 +27,7 @@ export default class scrollListener {
 
     // Create the Custom Scrollbar
     createScrollbar() {
+        console.log("kjsad");
         this.scrollbar = document.createElement("div");
         this.scrollbar.setAttribute("id","scrollbar");
         this.scrollbar.style.transition = this.transitionTime;

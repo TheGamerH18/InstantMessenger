@@ -4,17 +4,7 @@ export let ExistingChats = new Array();
 export let clearChatMessages = () => {
     var el = document.querySelector('.openChat');
 
-    try {
-        while (el.childNodes.length > 1) {
-            if(el.childNodes[0].id != "scrollbar") {
-                el.removeChild(el.childNodes[0]);
-            } else {
-                el.removeChild(el.childNodes[1]);
-            }
-        }
-    } catch (e) {
-        console.warn(e);
-    }
+    while (el.firstChild) el.removeChild(el.firstChild);
 };
 
 // Clear the Whole Chat List
@@ -38,7 +28,7 @@ export let exists = (newChat) => {
 
 // To set the clicked chat to active
 // Needed in the Renderer to know what needs to be Rendered
-export function setActiveID (obj) {
+export function setActiveID(obj) {
     for (let i = 0; i < ExistingChats.length; ++i) {
         if (ExistingChats[i] == obj) {
             ExistingChats[i].setActive(!0);
@@ -58,7 +48,7 @@ export let addMessage = (id, message, bool) => {
 }
 
 export let getUserNameOfActive = () => {
-    for(let i = 0; i < ExistingChats.length; i++)
-        if(ExistingChats[i].isActive)
+    for (let i = 0; i < ExistingChats.length; i++)
+        if (ExistingChats[i].isActive)
             return ExistingChats[i].name;
 }
