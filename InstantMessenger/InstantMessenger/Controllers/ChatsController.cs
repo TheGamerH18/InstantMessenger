@@ -1,18 +1,24 @@
 ﻿using InstantMessenger.Data;
 using InstantMessenger.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace InstantMessenger.Controllers
 {
+    [Authorize]
     public class ChatsController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ChatsController(ApplicationDbContext context)
+        public ChatsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -22,22 +28,19 @@ namespace InstantMessenger.Controllers
             return View(await _context.Chat.ToListAsync());
         }
 
-        // GET: Chats/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Chats/Details/
+        // Returns all Usernames except the one of the Calling User
+        public IActionResult Details()
         {
-            if (id == null)
+            List<string> result = new();
+            var userquery = _context.Users
+                .Where(p => p.UserName != _userManager.GetUserAsync(User).Result.UserName)
+                .Select(p => p.UserName);
+            foreach (var user in userquery)
             {
-                return NotFound();
+                result.Add(user);
             }
-
-            Chat chat = await _context.Chat
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (chat == null)
-            {
-                return NotFound();
-            }
-
-            return View(chat);
+            return Ok(result);
         }
 
         // GET: Chats/Create
