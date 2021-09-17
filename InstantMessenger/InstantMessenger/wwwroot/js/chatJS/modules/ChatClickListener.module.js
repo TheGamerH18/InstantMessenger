@@ -2,6 +2,8 @@
 * This Class is a Mouse Listener
 * to check if it clicked on a Chat, if the Chat is attached
 * to be listened.
+ * 
+ * the class / Obj must have a setActive(boolean) to work!
 */
 class ChatListener {
 
@@ -48,6 +50,9 @@ class ChatListener {
         if(this.listening.length == 0)
             return;
 
+        if (!this.valid())
+            return;
+
         // Loop through all listening obj
         for(let i = 0; i < this.listening.length; ++i) {
             // If the mouse is over
@@ -66,6 +71,23 @@ class ChatListener {
                     if(this.clicked)
                         this.listening[i].setActive(false);
                 }
+        }
+    }
+
+    valid() {
+        for (let i = 0; i < this.listening.length; ++i) {
+            // If the mouse is over
+            if (
+                this.listening[i].offsetTop <= this.mouse.y &&
+                this.listening[i].offsetLeft <= this.mouse.x &&
+                this.listening[i].offsetTop + this.listening[i].height >= this.mouse.y &&
+                this.listening[i].offsetLeft + this.listening[i].width >= this.mouse.x
+            ) {
+                // if the left msnbtn is clicked
+                if (this.clicked)
+                    return true;
+            }
+            return false;
         }
     }
 }

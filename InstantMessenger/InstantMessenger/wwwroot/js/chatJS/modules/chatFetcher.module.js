@@ -14,6 +14,11 @@ export function ClearAll() {
     var el = document.querySelector('.chats');
 
     while (el.firstChild) el.removeChild(el.firstChild);
+
+    setTimeout(() => {
+        setActiveID(ExistingChats[0]);
+    }, 100)
+
 }
 
 // check if the chat is already existing

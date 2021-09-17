@@ -32,7 +32,6 @@ export default class scrollListener {
         this.scrollbar.style.transition = this.transitionTime;
         this.obj.appendChild(this.scrollbar);
         this.scrollbar.style.transform = "scale(0)";
-        console.log("kjsad");
     }
 
     // Check if the Cursor is inside of the Element
@@ -51,11 +50,10 @@ export default class scrollListener {
 
     // Scroll the Element
     scrollY( Y ) {
-        if(!this.validatePosTop( Y ) || !this.validatePosBottom( Y ))
+        if (!this.validatePosTop(Y) || !this.validatePosBottom(Y))
             return;
-
-        this.obj.style.top = ( parseInt( this.obj.style.top ) + ( Y * -1 ) ) + "px";
-        this.updateScrollbar( Y );
+        this.obj.style.top = (parseInt(this.obj.style.top) + (Y * -1)) + "px";
+        this.updateScrollbar(Y);
     }
 
 
@@ -78,14 +76,17 @@ export default class scrollListener {
         else
             this.obj.style.top = "-" + ( this.obj.scrollHeight - window.innerHeight ) + "px";
 
-        // Set the Scrollbar in the Correct Positon 
+        // Set the Scrollbar in the Correct Positon
         this.updateScrollbar(this.obj.scrollHeight - window.innerHeight);
         return false;
     }
 
     updateScrollbar( Y ) {
         // Get the Percentage of the Scroll
-        let percentage = (this.obj.offsetTop-10) / (this.obj.scrollHeight-window.innerHeight + this.scrollbar.scrollHeight);
+        let percentage = (this.obj.offsetTop - 10) / (this.obj.scrollHeight - window.innerHeight + this.scrollbar.scrollHeight);
+
+        if (!this.scrollable())
+            return false;
 
         this.scrollbar.style.top = -percentage*(this.obj.scrollHeight) + "px";
 
@@ -93,6 +94,11 @@ export default class scrollListener {
         window.clearTimeout(this.timeout2);
 
         this.showScrollbar();
+    }
+
+    // Check if the Obj is large enough to enable scrolling
+    scrollable() {
+        return this.obj.scrollHeight > window.innerHeight;
     }
 
     // show the scrollbar for a short time

@@ -61,6 +61,7 @@ export class Chat{
     // Add a Message
     addMessage(messages, bool) {
         this.messages[this.messages.length] = [bool, messages];
+        this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
         setTimeout(() => {
             openChatScrollListener.scrollToEndY();
         }, 100)
