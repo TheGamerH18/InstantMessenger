@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity; using InstantMessenger.Data;
+﻿using InstantMessenger.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 {
@@ -32,7 +30,7 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Display(Name="Username")]
+            [Display(Name = "Username")]
             public string Username { get; set; }
 
             [Phone]
@@ -42,8 +40,8 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            string userName = await _userManager.GetUserNameAsync(user);
+            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
 
@@ -56,7 +54,7 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -68,15 +66,15 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            var username = await _userManager.GetUserNameAsync(user);
-            if(Input.Username != username)
+            string username = await _userManager.GetUserNameAsync(user);
+            if (Input.Username != username)
             {
-                var setUsernameResult = await _userManager.SetUserNameAsync(user, Input.Username);
+                IdentityResult setUsernameResult = await _userManager.SetUserNameAsync(user, Input.Username);
                 if (!setUsernameResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set Username";
@@ -90,10 +88,10 @@ namespace InstantMessenger.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                IdentityResult setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";

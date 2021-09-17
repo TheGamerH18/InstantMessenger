@@ -1,5 +1,3 @@
-using System;
-
 namespace InstantMessenger.Models
 {
     public class ErrorViewModel

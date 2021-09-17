@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity; using InstantMessenger.Data;
-
+﻿using Microsoft.AspNetCore.Identity;
 namespace InstantMessenger.Data
 {
     public class ApplicationUser : IdentityUser

@@ -27,19 +27,19 @@ namespace InstantMessenger.Hubs
         public override Task OnConnectedAsync()
         {
             Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
-            var user = _userManager.FindByNameAsync(Context.User.Identity.Name);
-            var messages = _context.Chat.Where(p =>
+            Task<ApplicationUser> user = _userManager.FindByNameAsync(Context.User.Identity.Name);
+            Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Models.Chat, ApplicationUser> messages = _context.Chat.Where(p =>
                 p.Reciever == user.Result
                 || p.Sender == user.Result)
                 .Include(p => p.Reciever)
                 .Include(p => p.Sender);
             List<Dictionary<string, dynamic>> chats = new();
-            foreach(Models.Chat message in messages)
+            foreach (Models.Chat message in messages)
             {
                 chats = AddmessagetoArray(message, chats);
             }
 
-            var chatjson = JsonSerializer.Serialize(chats);
+            string chatjson = JsonSerializer.Serialize(chats);
             Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
             Console.WriteLine("Connected");
             return base.OnConnectedAsync();
@@ -47,8 +47,8 @@ namespace InstantMessenger.Hubs
 
         private List<Dictionary<string, dynamic>> AddmessagetoArray(Models.Chat message, List<Dictionary<string, dynamic>> chats)
         {
-            var contextuser = GetUserbyName(Context.User.Identity.Name);
-            var isfromuser = (message.Reciever.UserName != contextuser.UserName);
+            ApplicationUser contextuser = GetUserbyName(Context.User.Identity.Name);
+            bool isfromuser = (message.Reciever.UserName != contextuser.UserName);
             // Create Dictionary, which holds if the user is the sender and the message itself
             List<dynamic> newmessage = new();
             newmessage.Add(!isfromuser);
@@ -64,7 +64,8 @@ namespace InstantMessenger.Hubs
                         chats[i]["Messages"].Add(newmessage);
                         return chats;
                     }
-                } else
+                }
+                else
                 {
                     if (chats[i]["UserName"] == message.Sender.UserName &&
                         chats[i]["UserID"] == message.Sender.Id)
@@ -76,7 +77,7 @@ namespace InstantMessenger.Hubs
             }
 
             // Create new Chat
-            var newchat = NewChat(isfromuser, message);
+            Dictionary<string, dynamic> newchat = NewChat(isfromuser, message);
             newchat["Messages"].Add(newmessage);
             chats.Add(newchat);
             return chats;
@@ -84,7 +85,7 @@ namespace InstantMessenger.Hubs
 
         private static Dictionary<string, dynamic> NewChat(bool isfromuser, Models.Chat message)
         {
-            var User = isfromuser ? message.Reciever : message.Sender;
+            ApplicationUser User = isfromuser ? message.Reciever : message.Sender;
             Dictionary<string, dynamic> newchat = new();
             newchat.Add("UserName", User.UserName);
             newchat.Add("UserID", User.Id);
@@ -117,9 +118,9 @@ namespace InstantMessenger.Hubs
             await _context.SaveChangesAsync();
 
             bool v = messagetodb.Reciever.UserName != name;
-            var id = v ? messagetodb.Reciever : messagetodb.Sender;
-            var id2 = v ? messagetodb.Sender : messagetodb.Reciever;
-            var isfromuser = messagetodb.Reciever.UserName != GetUserbyName(name).UserName;
+            ApplicationUser id = v ? messagetodb.Reciever : messagetodb.Sender;
+            ApplicationUser id2 = v ? messagetodb.Sender : messagetodb.Reciever;
+            bool isfromuser = messagetodb.Reciever.UserName != GetUserbyName(name).UserName;
 
             _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
             _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
@@ -132,7 +133,11 @@ namespace InstantMessenger.Hubs
 
         private bool Checkuserexists(string username)
         {
-            if (GetUserbyName(username) != null) return true;
+            if (GetUserbyName(username) != null)
+            {
+                return true;
+            }
+
             return false;
         }
     }

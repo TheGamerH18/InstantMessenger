@@ -1,11 +1,11 @@
 using InstantMessenger.Data;
+using InstantMessenger.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using InstantMessenger.Hubs;
 
 namespace InstantMessenger
 {
@@ -30,7 +30,8 @@ namespace InstantMessenger
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
 
-            services.AddSignalR(e => {
+            services.AddSignalR(e =>
+            {
                 e.MaximumReceiveMessageSize = 102400000;
                 e.EnableDetailedErrors = true;
             });

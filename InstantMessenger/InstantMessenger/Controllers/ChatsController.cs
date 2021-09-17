@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InstantMessenger.Data;
+using InstantMessenger.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using InstantMessenger.Data;
-using InstantMessenger.Models;
 
 namespace InstantMessenger.Controllers
 {
@@ -33,7 +30,7 @@ namespace InstantMessenger.Controllers
                 return NotFound();
             }
 
-            var chat = await _context.Chat
+            Chat chat = await _context.Chat
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (chat == null)
             {
@@ -73,7 +70,7 @@ namespace InstantMessenger.Controllers
                 return NotFound();
             }
 
-            var chat = await _context.Chat.FindAsync(id);
+            Chat chat = await _context.Chat.FindAsync(id);
             if (chat == null)
             {
                 return NotFound();
@@ -124,7 +121,7 @@ namespace InstantMessenger.Controllers
                 return NotFound();
             }
 
-            var chat = await _context.Chat
+            Chat chat = await _context.Chat
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (chat == null)
             {
@@ -139,7 +136,7 @@ namespace InstantMessenger.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var chat = await _context.Chat.FindAsync(id);
+            Chat chat = await _context.Chat.FindAsync(id);
             _context.Chat.Remove(chat);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
