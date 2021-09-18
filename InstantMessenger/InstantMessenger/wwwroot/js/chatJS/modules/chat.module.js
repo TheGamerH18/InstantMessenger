@@ -11,6 +11,7 @@ export class Chat{
         UserName: name,
         UserID: id,
         Messages: messages = new Array,
+        UserProfilePicture: pic
     } = {}) {
 
         this.name = name;
@@ -26,7 +27,12 @@ export class Chat{
 
         this.userImg = document.createElement("img");
         this.userImg.setAttribute("class", "userImg");
-        this.userImg.setAttribute("src", "img/fallbackImg.jpg");
+
+        // Set the Profile Pic, is not undefined
+        if(pic == undefined)
+            this.userImg.setAttribute("src", "img/fallbackImg.jpg");
+        else
+            this.userImg.setAttribute("src", "data:image/*;base64,"+pic);
 
         this.content = document.createElement("div");
         this.content.setAttribute("class", "content");
