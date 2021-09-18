@@ -43,7 +43,7 @@ export class Chat{
 
         this.latestMes = document.createElement("p");
         this.latestMes.setAttribute("class", "newestMessage");
-        if (this.messages.length != 0 || this.messages != undefined) {
+        if (this.messages.length != 0) {
             this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
         }
 
