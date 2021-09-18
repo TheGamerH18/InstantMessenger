@@ -89,6 +89,7 @@ namespace InstantMessenger.Hubs
             Dictionary<string, dynamic> newchat = new();
             newchat.Add("UserName", User.UserName);
             newchat.Add("UserID", User.Id);
+            if(User.ProfilePicture != null) newchat.Add("UserProfilePicture", User.ProfilePicture);
             newchat.Add("Messages", new List<List<dynamic>>());
 
             return newchat;
