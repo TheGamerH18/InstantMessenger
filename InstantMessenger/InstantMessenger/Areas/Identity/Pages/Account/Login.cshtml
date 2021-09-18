@@ -17,6 +17,9 @@
         <label for="Username" asp-for="Input.UsernameorEmail"><p>Benutzername:</p></label>
         <input required asp-for="Input.Password" id="Password">
         <label for="Password" asp-for="Input.Password"><p>Password:</p></label>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            @Model.ErrorMessage
+        </div>
         <input id="loginBtn" type="submit" value="Anmelden">
     </form>
 </div>
