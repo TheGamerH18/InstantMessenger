@@ -43,7 +43,8 @@ export class Chat{
 
         this.latestMes = document.createElement("p");
         this.latestMes.setAttribute("class", "newestMessage");
-        this.latestMes.innerHTML = this.messages[this.messages.length-1][1];
+        if(this.messages.length != 0 || this.messages != undefined)
+            this.latestMes.innerHTML = this.messages[this.messages.length-1][1];
 
         // Append the Elements
         document.querySelector(".chats").appendChild(this.div);
