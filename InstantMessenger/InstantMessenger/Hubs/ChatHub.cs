@@ -28,13 +28,12 @@ namespace InstantMessenger.Hubs
         {
             Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
             Task<ApplicationUser> user = _userManager.FindByNameAsync(Context.User.Identity.Name);
-            Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Models.Chat, ApplicationUser> messages = _context.Chat.Where(p =>
+            List<Dictionary<string, dynamic>> chats = new();
+            foreach (Models.Chat message in _context.Chat.Where(p =>
                 p.Reciever == user.Result
                 || p.Sender == user.Result)
                 .Include(p => p.Reciever)
-                .Include(p => p.Sender);
-            List<Dictionary<string, dynamic>> chats = new();
-            foreach (Models.Chat message in messages)
+                .Include(p => p.Sender))
             {
                 chats = AddmessagetoArray(message, chats);
             }
@@ -43,6 +42,57 @@ namespace InstantMessenger.Hubs
             Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
             Console.WriteLine("Connected");
             return base.OnConnectedAsync();
+        }
+        
+        public async Task SendtoUser(string reciever, string message)
+        {
+            string name = Context.User.Identity.Name;
+
+            if (!Checkuserexists(reciever))
+            {
+                Console.WriteLine("User " + name + " send Message to Unknown User " + reciever);
+                return;
+            }
+            // Create Chat message from model
+            Models.Chat messagetodb = new()
+            {
+                Reciever = GetUserbyName(reciever),
+                Sender = GetUserbyName(name),
+                Text = message
+            };
+
+            Console.WriteLine("Created new Message");
+
+            // Add message to DB
+            await _context.Chat.AddAsync(messagetodb);
+            await _context.SaveChangesAsync();
+
+            bool v = messagetodb.Reciever.UserName != name;
+            ApplicationUser id = v ? messagetodb.Reciever : messagetodb.Sender;
+            ApplicationUser id2 = v ? messagetodb.Sender : messagetodb.Reciever;
+            bool isfromuser = messagetodb.Reciever.UserName != GetUserbyName(name).UserName;
+
+            _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
+            _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
+        }
+
+        public async Task CreateNewChat(string username)
+        {
+            Task<ApplicationUser> user = _userManager.FindByNameAsync(Context.User.Identity.Name);
+            List<Dictionary<string, dynamic>> chats = new();
+            foreach (Models.Chat message in _context.Chat.Where(p =>
+                p.Reciever == user.Result
+                || p.Sender == user.Result)
+                .Include(p => p.Reciever)
+                .Include(p => p.Sender))
+            {
+                chats = AddmessagetoArray(message, chats);
+            }
+            var tempmessage = new Models.Chat();
+            tempmessage.Reciever = GetUserbyName(username);
+            chats.Add(NewChat(true, tempmessage));
+            string chatjson = JsonSerializer.Serialize(chats);
+            await Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
         }
 
         private List<Dictionary<string, dynamic>> AddmessagetoArray(Models.Chat message, List<Dictionary<string, dynamic>> chats)
@@ -93,38 +143,6 @@ namespace InstantMessenger.Hubs
             newchat.Add("Messages", new List<List<dynamic>>());
 
             return newchat;
-        }
-
-        public async Task SendtoUser(string reciever, string message)
-        {
-            string name = Context.User.Identity.Name;
-
-            if (!Checkuserexists(reciever))
-            {
-                Console.WriteLine("User " + name + " send Message to Unknown User " + reciever);
-                return;
-            }
-            // Create Chat message from model
-            Models.Chat messagetodb = new()
-            {
-                Reciever = GetUserbyName(reciever),
-                Sender = GetUserbyName(name),
-                Text = message
-            };
-
-            Console.WriteLine("Created new Message");
-
-            // Add message to DB
-            await _context.Chat.AddAsync(messagetodb);
-            await _context.SaveChangesAsync();
-
-            bool v = messagetodb.Reciever.UserName != name;
-            ApplicationUser id = v ? messagetodb.Reciever : messagetodb.Sender;
-            ApplicationUser id2 = v ? messagetodb.Sender : messagetodb.Reciever;
-            bool isfromuser = messagetodb.Reciever.UserName != GetUserbyName(name).UserName;
-
-            _ = Clients.Caller.SendAsync("recievemessage", id.Id, messagetodb.Text, !isfromuser);
-            _ = Clients.Group(id.UserName).SendAsync("recievemessage", id2.Id, messagetodb.Text, isfromuser);
         }
 
         private ApplicationUser GetUserbyName(string username)
