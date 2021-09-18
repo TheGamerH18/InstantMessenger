@@ -18,15 +18,3 @@
         <textarea placeholder="Nachricht schreiben!" name="textMessage" id="inputMessage"></textarea>
     </div>
 </div>
-
-<script src ="~/js/chatJS/autocomplete.js"></script>
-<script src ="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $.get("/Chats/Details", function (data) {
-            console.log(data);
-            countries = data;
-            autocomplete(document.getElementById("username"), countries);
-        });
-    });
-</script>
