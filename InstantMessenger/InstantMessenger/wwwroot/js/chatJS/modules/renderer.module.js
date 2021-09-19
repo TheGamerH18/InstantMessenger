@@ -1,22 +1,9 @@
 import { ExistingChats, exists } from "./chatFetcher.module.js";
 import { Chats } from "./chat.js";
 import { Chat } from "./chat.module.js";
-import { ChatClickListener} from "./ChatClickListener.module.js";
 import { inputListener } from "./chat.input.module.js"
 import scrollListener from "./scrollListener.module.js";
 
-// The Main Renderer
-// Check for all existing Chag if any Chat is setted to Active
-// if there is one than call the render on this
-export const mainRender = () => {
-    for (let i = 0; i < ExistingChats.length; i++) {
-        if (ExistingChats[i].isActive) {
-            ExistingChats[i].render();
-        }
-    }
-    updater();
-    setTimeout(mainRender, 1000 / 30)
-}
 new inputListener(document.querySelector("#inputMessage"))
 new scrollListener(document.querySelector(".chatsOverall"));
 export let openChatScrollListener = new scrollListener(document.querySelector(".openChatOverall"));

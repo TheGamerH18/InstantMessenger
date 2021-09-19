@@ -1,3 +1,5 @@
+import { ChatClickListener } from "./ChatClickListener.module.js";
+
 export let ExistingChats = new Array();
 
 // Clear the Chat Window, to display the new Chat
@@ -9,7 +11,11 @@ export let clearChatMessages = () => {
 
 // Clear the Whole Chat List
 export function ClearAll() {
+
+    ChatClickListener.clear();
+
     ExistingChats = new Array();
+
     clearChatMessages();
     var el = document.querySelector('.chats');
 

@@ -44,6 +44,11 @@ class ChatListener {
         this.listening[this.listening.length] = obj;
     }
 
+    // Clear the Listening Objects
+    clear() {
+        this.listening = new Array();
+    }
+
     // The main Render obj for the Listener, to get a perma check.
     render() {
         // Return if listener is empty
@@ -61,16 +66,16 @@ class ChatListener {
                 this.listening[i].offsetLeft <= this.mouse.x && 
                 this.listening[i].offsetTop+this.listening[i].height >= this.mouse.y &&
                 this.listening[i].offsetLeft+this.listening[i].width >= this.mouse.x
-                ) {
-                    // if the left msnbtn is clicked
-                    if(this.clicked)
-                        this.listening[i].setActive(true);
-                } else {
-                    // and to reset the other
-                    // but only on a click in the chat list
-                    if(this.clicked)
-                        this.listening[i].setActive(false);
-                }
+            ) {
+                // if the left msnbtn is clicked
+                if(this.clicked)
+                    this.listening[i].setActive(true);
+            } else {
+                // and to reset the other
+                // but only on a click in the chat list
+                if(this.clicked)
+                    this.listening[i].setActive(false);
+            }
         }
     }
 
@@ -87,8 +92,8 @@ class ChatListener {
                 if (this.clicked)
                     return true;
             }
-            return false;
         }
+        return false;
     }
 }
 

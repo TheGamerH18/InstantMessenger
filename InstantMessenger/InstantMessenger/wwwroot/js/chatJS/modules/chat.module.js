@@ -13,6 +13,7 @@ export class Chat{
         Messages: messages = new Array,
         UserProfilePicture: pic
     } = {}) {
+        this.finished = false;
 
         this.name = name;
         this.id = id;
@@ -43,9 +44,10 @@ export class Chat{
 
         this.latestMes = document.createElement("p");
         this.latestMes.setAttribute("class", "newestMessage");
-        if (this.messages.length != 0) {
-            this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
+        if (this.messages.length == 0) {
+            this.messages = [[true, "Neuer  Chat"]];
         }
+        this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
 
         // Append the Elements
         document.querySelector(".chats").appendChild(this.div);
@@ -64,12 +66,14 @@ export class Chat{
         this.offsetLeft = this.div.offsetLeft;
         this.width = this.div.scrollWidth;
         this.height = this.div.scrollHeight;
+
     }
 
     // Add a Message
     addMessage(messages, bool) {
         this.messages[this.messages.length] = [bool, messages];
         this.latestMes.innerHTML = this.messages[this.messages.length - 1][1];
+        this.render();
         setTimeout(() => {
             openChatScrollListener.scrollToEndY();
         }, 100)
@@ -80,6 +84,7 @@ export class Chat{
         this.isActive = bool;
         if(this.isActive) {
             this.div.setAttribute("id", "active");
+            this.render();
             this.finished = false;
         }
         else {
