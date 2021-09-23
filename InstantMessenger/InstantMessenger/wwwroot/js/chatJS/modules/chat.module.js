@@ -106,10 +106,10 @@ export class Chat{
             else
                 this.createTo(this.messages[mes][1]);
         }
-        if(!this.finished) {
+        setTimeout(() => {
             openChatScrollListener.scrollToEndY();
             this.finished = true;
-        }
+        }, 100)
     }
 
     // Create a Message that came from the other Person

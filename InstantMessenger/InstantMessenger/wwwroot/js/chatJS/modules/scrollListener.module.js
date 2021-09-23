@@ -59,7 +59,7 @@ export default class scrollListener {
 
     // Validate if the Scrollpos will be Valid or not
     validatePosTop( Y ) {
-        if ( parseInt( this.obj.style.top ) + ( Y * -1 ) <= 0 )
+        if ( parseInt( this.obj.style.top ) + ( Y * -1 ) < 0 )
             return true;
         else
             this.obj.style.top = "-0px";
@@ -83,7 +83,7 @@ export default class scrollListener {
 
     updateScrollbar( Y ) {
         // Get the Percentage of the Scroll
-        let percentage = (this.obj.offsetTop - 10) / (this.obj.scrollHeight - window.innerHeight + this.scrollbar.scrollHeight);
+        let percentage = (this.obj.offsetTop - 2) / (this.obj.scrollHeight - window.innerHeight + this.scrollbar.scrollHeight);
 
         if (!this.scrollable())
             return false;

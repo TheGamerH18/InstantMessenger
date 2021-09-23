@@ -15,6 +15,10 @@ export class inputListener {
         document.addEventListener("keyup", (ev) => {
             this.enter = false;
         });
+
+        document.addEventListener("scroll", (ev) => {
+            console.log(ev)
+        })
     }
 
     render () {
