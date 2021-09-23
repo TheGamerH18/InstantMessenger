@@ -43,7 +43,7 @@ namespace InstantMessenger.Hubs
             Console.WriteLine("Connected");
             return base.OnConnectedAsync();
         }
-        
+
         public async Task SendtoUser(string reciever, string message)
         {
             string name = Context.User.Identity.Name;
@@ -88,8 +88,10 @@ namespace InstantMessenger.Hubs
             {
                 chats = AddmessagetoArray(message, chats);
             }
-            var tempmessage = new Models.Chat();
-            tempmessage.Reciever = GetUserbyName(username);
+            Models.Chat tempmessage = new Models.Chat
+            {
+                Reciever = GetUserbyName(username)
+            };
             chats.Add(NewChat(true, tempmessage));
             string chatjson = JsonSerializer.Serialize(chats);
             await Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
@@ -139,7 +141,11 @@ namespace InstantMessenger.Hubs
             Dictionary<string, dynamic> newchat = new();
             newchat.Add("UserName", User.UserName);
             newchat.Add("UserID", User.Id);
-            if(User.ProfilePicture != null) newchat.Add("UserProfilePicture", User.ProfilePicture);
+            if (User.ProfilePicture != null)
+            {
+                newchat.Add("UserProfilePicture", User.ProfilePicture);
+            }
+
             newchat.Add("Messages", new List<List<dynamic>>());
 
             return newchat;
