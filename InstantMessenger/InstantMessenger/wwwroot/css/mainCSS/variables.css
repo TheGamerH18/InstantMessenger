@@ -3,7 +3,7 @@
 
 *:not(html) {
     outline: none;
-    padding: 0px;
+    padding: 0;
     margin: 0;
     transition: 500ms linear;
     font-family: 'Roboto', sans-serif;
