@@ -29,11 +29,18 @@ namespace InstantMessenger.Hubs
             Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
             Task<ApplicationUser> user = _userManager.FindByNameAsync(Context.User.Identity.Name);
             List<Dictionary<string, dynamic>> chats = new();
-            foreach (Models.Chat message in _context.Chat.Where(p =>
-                p.Reciever == user.Result
-                || p.Sender == user.Result)
-                .Include(p => p.Reciever)
-                .Include(p => p.Sender))
+            var messages = _context.Chat.Where(p =>
+                                p.Reciever == user.Result
+                                || p.Sender == user.Result)
+                .Select(p => new Models.Chat
+                {
+                    Reciever = p.Reciever,
+                    Sender = p.Sender,
+                    Date = p.Date,
+                    Text = p.Text
+                })
+                            .ToList();
+            foreach (var message in messages)
             {
                 chats = AddmessagetoArray(message, chats);
             }
@@ -41,6 +48,7 @@ namespace InstantMessenger.Hubs
             string chatjson = JsonSerializer.Serialize(chats);
             Clients.Group(Context.User.Identity.Name).SendAsync("messages", chatjson);
             Console.WriteLine("Connected");
+            Console.WriteLine(chatjson);
             return base.OnConnectedAsync();
         }
 
@@ -58,7 +66,8 @@ namespace InstantMessenger.Hubs
             {
                 Reciever = GetUserbyName(reciever),
                 Sender = GetUserbyName(name),
-                Text = message
+                Text = message,
+                Date = DateTime.Now
             };
 
             Console.WriteLine("Created new Message");
@@ -80,15 +89,22 @@ namespace InstantMessenger.Hubs
         {
             Task<ApplicationUser> user = _userManager.FindByNameAsync(Context.User.Identity.Name);
             List<Dictionary<string, dynamic>> chats = new();
-            foreach (Models.Chat message in _context.Chat.Where(p =>
-                p.Reciever == user.Result
-                || p.Sender == user.Result)
-                .Include(p => p.Reciever)
-                .Include(p => p.Sender))
+            var messages = _context.Chat.Where(p =>
+                                p.Reciever == user.Result
+                                || p.Sender == user.Result)
+                .Select(p => new Models.Chat
+                {
+                    Reciever = p.Reciever,
+                    Sender = p.Sender,
+                    Date = p.Date,
+                    Text = p.Text
+                })
+                            .ToList();
+            foreach (Models.Chat message in messages)
             {
                 chats = AddmessagetoArray(message, chats);
             }
-            Models.Chat tempmessage = new Models.Chat
+            Models.Chat tempmessage = new()
             {
                 Reciever = GetUserbyName(username)
             };
