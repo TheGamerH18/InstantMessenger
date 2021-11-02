@@ -13,23 +13,23 @@ body {
     --width-outer: 300px;
 }
 
+#background {
+    opacity: .35;
+}
+
 .chatsOverall {
     overflow: hidden;
     min-height: 100%;
     width: var(--width-outer);
-    background: var(--Color-Text);
+    background-color: darkgray;
     display: flex;
     position: absolute;
     flex-direction: column;
 }
 
-    .chatsOverall div:not(.content) {
-        border-bottom: 1px solid rgba(0,0,0,.4);
-        box-shadow: 0 0 2px var(--Accent-logo-900)
-    }
-
 #userSelf {
-    background-color: var(--BG-200);
+    filter: none;
+    background: linear-gradient(transparent 99%, black);
     display: flex;
     position: relative;
     width: var(--width-outer);
@@ -37,21 +37,24 @@ body {
     align-items: center;
 } #userSelf h1 {
     padding-left: 20px;
-} .userChat {
+}
+.userChat {
     overflow: hidden;
     height: fit-content;
     padding: 10px;
     width: 280px;
     position: relative;
     display: flex;
+    border-bottom: 1px solid black;
 }
     .userChat .content {
         max-width: calc(var(--width-outer)-calc(200px+calc(2*10px)));
-        max-height: 6rem;
+        max-height: 5.75rem;
         overflow: hidden;
     }
     .userChat#active {
-        background-color: var(--BG-200);
+        background: var(--Accent-logo-900);
+        padding-left: 20px;
     } img {
     width: 100px;
     height: 100px;
@@ -136,30 +139,33 @@ body {
     outline: none;
     border: none;
     width: calc(var(--width-outer) - calc(2*10px));
-    background: rgba(255,255,255,.1);
+    background: white;
     transition: inherit;
     border-bottom: 1px solid black;
-} .autocomplete .autocomplete-items {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    overflow-y: hidden;
-    color: var(--Color-Text);
-    z-index: 100;
-    transition: inherit;
-    background: var(--Accent-logo-200)
-} .autocomplete .autocomplete-items div {
-    cursor: pointer;
-    transition: inherit;
-} .autocomplete .autocomplete-items div:hover, .autocomplete-active, .autocomplete strong {
-    /*when navigating through the items using the arrow keys:*/
-    background-color: var(--Accent-logo-600) !important;
-    color: var(--Color-Text);
-    transition: inherit;
-} .weiterescont {
-    background: red;
-    padding-top: 20px;
-    margin-bottom: 20px;
-    width: 100%;
 }
+    .autocomplete .autocomplete-items {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        overflow-y: hidden;
+        color: var(--Color-Text);
+        z-index: 100;
+        transition: inherit;
+        background: gray;
+    } .autocomplete .autocomplete-items div {
+    cursor: pointer;
+    padding: 10px;
+    padding-left: 0px;
+    transition: inherit;
+}
+        .autocomplete .autocomplete-items div:hover, .autocomplete-active, .autocomplete strong {
+            /*when navigating through the items using the arrow keys:*/
+            background: var(--Accent-logo-700) !important;
+            color: var(--Color-Text);
+            transition: inherit;
+        }
+    .autocomplete strong {
+        padding: 11px;
+        padding-right: 0px;
+    }

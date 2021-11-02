@@ -15,10 +15,6 @@ export class inputListener {
         document.addEventListener("keyup", (ev) => {
             this.enter = false;
         });
-
-        document.addEventListener("scroll", (ev) => {
-            console.log(ev)
-        })
     }
 
     render () {
@@ -27,7 +23,7 @@ export class inputListener {
             setTimeout(() => {
                 this.ListenerObj.value = "";
             }, 100)
-            if(string == "" || 0)
+            if (string == "" || string == "\n" || string == "\n\n" || string == "\n\n\n" || string == "\n\n\n\n" || string == "\n\n\n\n\n" || string == "\n\n\n\n\n\n" || string == "\n\n\n\n\n\n\n")
                 return;
             connection.invoke("SendtoUser", getUserNameOfActive(), string)
         }

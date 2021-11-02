@@ -31,7 +31,7 @@ export class Chat{
 
         // Set the Profile Pic, is not undefined
         if(pic == undefined)
-            this.userImg.setAttribute("src", "img/fallbackImg.jpg");
+            this.userImg.setAttribute("src", "img/fallback.svg");
         else
             this.userImg.setAttribute("src", "data:image/*;base64,"+pic);
 
@@ -100,16 +100,15 @@ export class Chat{
 
     // Render the Messages
     showChat() {
+        openChatScrollListener.scrollToTopY();
         for(let mes in this.messages){
             if(this.messages[mes][0])
                 this.createFrom(this.messages[mes][1]);
             else
                 this.createTo(this.messages[mes][1]);
         }
-        setTimeout(() => {
-            openChatScrollListener.scrollToEndY();
-            this.finished = true;
-        }, 100)
+        openChatScrollListener.scrollToEndY();
+        this.finished = true;
     }
 
     // Create a Message that came from the other Person
