@@ -19,6 +19,11 @@ namespace InstantMessenger.Controllers
             return View();
         }
 
+        public IActionResult Technologies()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
